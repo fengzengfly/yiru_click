@@ -89,6 +89,7 @@ def build_proxy_userpwd(country):
 
 class ClickRequest(BaseModel):
     url: HttpUrl
+    country: str
 
 
 def do_click(url, country=DEFAULT_COUNTRY):
@@ -129,11 +130,12 @@ def click(req: ClickRequest):
     start_time = time.time()
     target_url = str(req.url)
 
-    ok, status_code, err = do_click(target_url)
+    ok, status_code, err = do_click(target_url, country=req.country)
     cost = time.time() - start_time
 
     return {
         "url": target_url,
+        "country": req.country,
         "success": ok,
         "status_code": status_code,
         "cost_seconds": round(cost, 2),
